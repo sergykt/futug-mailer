@@ -4,6 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
+const morgan = require('morgan');
 
 const PORT = process.env.PORT || 3001;
 
@@ -13,6 +14,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(corsOptions));
+app.use(morgan('combined'));
 
 transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,
@@ -31,7 +33,7 @@ app.post('/api/send', async (req, res) => {
   try {
     const data = req.body;
     console.log(req.body);
-    const { email, present, time, mark, amount, mileAge, phone, transmition } = data;
+    const { present, time, mark, amount, mileAge, phone, transmition } = data;
     const htmlBody = (
       `<h2>Заказ №${orderNumber}</h2>
       <table>
@@ -70,7 +72,7 @@ app.post('/api/send', async (req, res) => {
 
     await transporter.sendMail({
       from: process.env.SMTP_EMAIL,
-      to: email,
+      to: process.env.SMTP_EMAIL,
       subject: `Ваш заказ автомобиля`,
       text: '',
       html: htmlBody,
