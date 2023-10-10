@@ -30,6 +30,7 @@ const makeStr = (arr) => arr.join(', ');
 app.post('/api/send', async (req, res) => {
   try {
     const data = req.body;
+    console.log(req.body);
     const { email, present, time, mark, amount, mileAge, phone, transmition } = data;
     const htmlBody = (
       `<h2>Заказ №${orderNumber}</h2>
@@ -79,7 +80,7 @@ app.post('/api/send', async (req, res) => {
 
     return res.status(200).end();
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return res.status(500).end();
   }
 });
