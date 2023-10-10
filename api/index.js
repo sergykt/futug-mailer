@@ -33,7 +33,7 @@ app.post('/api/send', async (req, res) => {
   try {
     const data = req.body;
     console.log(req.body);
-    const { present, time, mark, amount, mileAge, phone, transmition } = data;
+    const { email, present, time, mark, amount, mileAge, phone, transmition } = data;
     const htmlBody = (
       `<h2>Заказ №${orderNumber}</h2>
       <table>
@@ -72,7 +72,7 @@ app.post('/api/send', async (req, res) => {
 
     await transporter.sendMail({
       from: process.env.SMTP_EMAIL,
-      to: process.env.SMTP_EMAIL,
+      to: email,
       subject: `Ваш заказ автомобиля`,
       text: '',
       html: htmlBody,
