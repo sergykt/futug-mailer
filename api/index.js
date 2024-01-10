@@ -88,13 +88,35 @@ app.post('/api/send', async (req, res) => {
 app.post('/api/borninjuly/', async (req, res) => {
   try {
     const data = req.body;
-    const { email, text, subject } = data;
+    const { email, clientEmail, message, name, phone } = data;
+
+    const htmlBody = `<table>
+      <tbody>
+        <tr>
+          <td>Имя</td>
+          <td>${name}</td>
+        </tr>
+        <tr>
+          <td>E-mail</td>
+          <td>${clientEmail}</td>
+        </tr>
+        <tr>
+          <td>Телефон</td>
+          <td>${phone}</td>
+        </tr>
+        <tr>
+          <td>Сообщение</td>
+          <td>${message}</td>
+        </tr>
+      </tbody>
+    </table>`;
 
     await transporter.sendMail({
       from: process.env.SMTP_EMAIL,
       to: email,
-      subject,
-      text,
+      subject: `Born in july order from ${name}`,
+      text: '',
+      html: htmlBody,
     });
 
     return res.status(200).end();
