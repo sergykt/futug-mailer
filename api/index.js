@@ -34,8 +34,7 @@ app.post('/api/send', async (req, res) => {
     const data = req.body;
     console.log(req.body);
     const { email, present, time, mark, amount, mileAge, phone, transmition } = data;
-    const htmlBody = (
-      `<h2>Заказ №${orderNumber}</h2>
+    const htmlBody = `<h2>Заказ №${orderNumber}</h2>
       <table>
         <tbody>
           <tr>
@@ -67,8 +66,7 @@ app.post('/api/send', async (req, res) => {
             <td>${phone}</td>
           </tr>
         </tbody>
-      </table>`
-    );
+      </table>`;
 
     await transporter.sendMail({
       from: process.env.SMTP_EMAIL,
@@ -79,6 +77,25 @@ app.post('/api/send', async (req, res) => {
     });
 
     orderNumber += 1;
+
+    return res.status(200).end();
+  } catch (err) {
+    console.error(err);
+    return res.status(500).end();
+  }
+});
+
+app.post('/api/borninjuly/', async (req, res) => {
+  try {
+    const data = req.body;
+    const { email, text, subject } = data;
+
+    await transporter.sendMail({
+      from: process.env.SMTP_EMAIL,
+      to: email,
+      subject,
+      text,
+    });
 
     return res.status(200).end();
   } catch (err) {
